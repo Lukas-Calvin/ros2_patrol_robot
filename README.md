@@ -54,7 +54,8 @@ ros2 launch fishbot_description gazebo.launch.py
 source install/setup.bash
 ros2 launch fishbot_navigation2 navigation2.launch.py
 ```
-复线到此部分后，在ubuntu24.04上使用导航功能失败，后续内容没能成功从22.04移植到24.04上，但是从其他论坛中能看到有实现的案例，还需继续学习。
+>[!Warning]
+复现到此部分后，在ubuntu24.04上使用导航功能失败，后续内容没能成功从22.04移植到24.04上，但是从其他论坛中能看到有实现的案例，还需继续学习。
 
 运行自动巡检
 ```
@@ -62,5 +63,5 @@ source install/setup.bash
 ros2 launch autopatrol_robot autopatrol.launch.py
 ```
 ## 3.作者
-- [fishros](https://github.com/fishros)完成了基于ubuntu22.04的开发
-- [calvin-luvas](https://github.com/Lukas-Calvin)在fishros开发的程序基础上，使用ubuntu24.04完成开发
+- [fishros](https://github.com/fishros)完成了基于ubuntu22.04、ROS2 humble、gazebo11 的开发
+- [calvin-luvas](https://github.com/Lukas-Calvin)在fishros开发的程序基础上，移植到ubuntu24.04、ROS2 jazzy、gazebo harmonic上使用 
