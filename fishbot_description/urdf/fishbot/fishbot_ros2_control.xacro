@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    <xacro:macro name="fishbot_ros2_control">
+        <ros2_control name="FishBot_GazeboSimSystem" type="system">
+            <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+            <joint name="wheel_left_joint" type="continuous">
+                <parent link="base_link"/>
+                <child link="wheel_left_link"/>
+                <command_interface name="velocity">
+                    <param name="min">-1</param>
+                    <param name="max">1</param>
+                </command_interface>
+                <command_interface name="effort">
+                    <param name="min">-0.1</param>
+                    <param name="max">0.1</param>
+                </command_interface>
+
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+                <state_interface name="effort" />
+
+                <axis xyz="0 1 0"/>
+                <axis>
+                    <xyz>0 0 1</xyz>
+                    <limit>
+                        <effort>20</effort> <!-- from <wheel_torque> in libgazebo_ros_diff_drive.so.-->
+                    </limit>
+                </axis>
+            </joint>
+            <joint name="wheel_right_joint" type="continuous">
+                <parent link="base_link"/>
+                <child link="wheel_right_link"/>
+                <command_interface name="velocity">
+                    <param name="min">-1</param>
+                    <param name="max">1</param>
+                </command_interface>
+                
+                <command_interface name="effort">
+                    <param name="min">-0.1</param>
+                    <param name="max">0.1</param>
+                </command_interface>
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+                <state_interface name="effort" />
+
+                <axis xyz="0 1 0"/>
+                <axis>
+                    <xyz>0 0 1</xyz>
+                    <limit>
+                        <effort>20</effort> <!-- from <wheel_torque> in libgazebo_ros_diff_drive.so.-->
+                    </limit>
+                </axis>
+            </joint>
+        </ros2_control>
+        
+        <!-- 力控 -->
+        <gazebo>
+            <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system">
+                <parameters>$(find fishbot_description)/config/fishbot_ros2_controller.yaml</parameters>
+                <topic>cmd_vel</topic>
+                <odom_topic>odom</odom_topic>   
+                <frame_id>odom</frame_id>
+                <child_frame_id>base_footprint</child_frame_id>
+                <odom_publish_frequency>30</odom_publish_frequency>
+                <tf_topic>/tf</tf_topic> 
+            </plugin>
+        </gazebo>   
+
+        <!-- 两轮差速控制 -->
+        <gazebo>
+            <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+                <robot_param>robot_description</robot_param>
+                <robot_param_node>robot_state_publisher</robot_param_node>
+                <parameters>$(find fishbot_description)/config/fishbot_ros2_controller.yaml</parameters>
+                <!-- 下面这两行在chapt6注释掉也是可以的 -->
+                <topic>cmd_vel</topic>
+                <!-- <odom_topic>odom</odom_topic>    -->
+            </plugin>
+        </gazebo>
+    </xacro:macro>
+</robot>
