@@ -17,7 +17,7 @@
 - 系统版本: ubuntu24.04
 - ROS版本： ROS2 Jazzy
 
-### 2.1 安装以来
+### 2.1 安装依赖
 
 本项目建图采用slam-toolbox, 导航采用Navigation 2, 仿真采用 Gazebo， 运动控制采用ROS2-control实现，构建之前请先安装依赖，指令如下：
 
